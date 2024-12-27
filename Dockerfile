@@ -1,10 +1,16 @@
 FROM alpine:3.19
 
-# 安装squid并清理缓存
-RUN apk add --no-cache squid && \
+# 安装squid和apache2-utils(用于htpasswd命令)
+RUN apk add --no-cache squid apache2-utils && \
     mkdir -p /var/cache/squid && \
     mkdir -p /var/log/squid && \
     chown -R squid:squid /var/cache/squid /var/log/squid
+
+# 创建认证密码文件
+RUN touch /etc/squid/passwd && \
+    chown squid:squid /etc/squid/passwd && \
+    # 创建默认用户名密码：proxy/proxy123
+    htpasswd -bc /etc/squid/passwd proxy proxy123
 
 # 配置squid
 COPY squid.conf /etc/squid/squid.conf
