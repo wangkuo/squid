@@ -25,4 +25,4 @@ COPY squid.conf /etc/squid/squid.conf
 EXPOSE 3128
 
 # 启动squid
-CMD ["squid", "-N", "-f", "/etc/squid/squid.conf"] 
+CMD rm -f /var/run/squid.pid && squid -N -f /etc/squid/squid.conf
