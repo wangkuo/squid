@@ -6,6 +6,12 @@ RUN apk add --no-cache squid apache2-utils && \
     mkdir -p /var/log/squid && \
     chown -R squid:squid /var/cache/squid /var/log/squid
 
+# 设置时区为Asia/Shanghai
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \
+    echo "Asia/Shanghai" > /etc/timezone && \
+    apk del tzdata
+
 # 创建认证密码文件
 RUN touch /etc/squid/passwd && \
     chown squid:squid /etc/squid/passwd && \
